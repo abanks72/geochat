@@ -6,9 +6,11 @@ import LoginForm from './LoginForm';
 import RegistrationForm from './RegistrationForm';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 function App() {
   const [user, setUser] = useState(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
     const auth = getAuth();
@@ -28,26 +30,31 @@ function App() {
       });
   };
 
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+
   return (
     <div>
       <Router>
-          <nav className="navbar navbar-expand-md navbar-light bg-light">
-            <Link to="/" className="navbar-brand">
-              Home
-            </Link>
+        <nav className="navbar navbar-expand-md navbar-light bg-light">
+          <Link to="/" className="navbar-brand">
+            Home
+          </Link>
+          <ul className="navbar-nav ms-auto">
             {user ? (
-              <ul className="navbar-nav">
-                <li className="nav-item">
-                  {user.email && <span className="nav-link">Welcome, {user.email}</span>}
-                </li>
-                <li className="nav-item">
-                  <a href="/" className="nav-link" onClick={handleLogout}>
-                    Logout
-                  </a>
-                </li>
-              </ul>
+              <li className="nav-item">
+                <Dropdown className="dropdown-menu.bg-transparent" isOpen={dropdownOpen} toggle={toggleDropdown}>
+                  <DropdownToggle caret>
+                    Welcome, {user.email}
+                  </DropdownToggle>
+                  <DropdownMenu right>
+                    <DropdownItem onClick={handleLogout}>Logout</DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              </li>
             ) : (
-              <ul className="navbar-nav">
+              <>
                 <li className="nav-item">
                   <Link to="/register" className="nav-link">
                     Register
@@ -58,9 +65,10 @@ function App() {
                     Login
                   </Link>
                 </li>
-              </ul>
+              </>
             )}
-          </nav>
+          </ul>
+        </nav>
         <Routes>
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/login" element={<LoginForm />} />

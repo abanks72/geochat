@@ -77,15 +77,17 @@ function Chat({ chatId }) {
                 <CardText key={message.id}>{message.text}</CardText>
               ))}
             </div>
-            <Input
-              type="text"
-              placeholder="Type a message"
-              value={messageInput}
-              onChange={(e) => setMessageInput(e.target.value)}
-            />
-            <Button color="primary" onClick={handleSendMessage}>
-              Send
-            </Button>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '10px' }}>
+              <Input
+                type="text"
+                placeholder="Type a message"
+                value={messageInput}
+                onChange={(e) => setMessageInput(e.target.value)}
+              />
+              <Button color="primary" onClick={handleSendMessage}>
+                Send
+              </Button>
+            </div>
           </CardBody>
         </Card>
       )}
@@ -94,3 +96,4 @@ function Chat({ chatId }) {
 }
 
 export default Chat;
+
