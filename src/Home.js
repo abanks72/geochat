@@ -1,32 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { app, db } from './firebaseConfig';
 import Atlanta from './Atlanta';
 import SanFrancisco from './SanFrancisco';
 import Chat from './Chat';
+import {
+  Container,
+  Form,
+  FormGroup,
+  Input,
+  Label,
+} from 'reactstrap';
 import {
   collection,
   doc,
   setDoc,
   getDoc,
 } from 'firebase/firestore';
-import {
-  Button,
-  Container,
-  Form,
-  FormGroup,
-  Input,
-  Label,
-  Navbar,
-  NavbarBrand,
-  Nav,
-  NavItem,
-  NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-} from 'reactstrap';
 
 function Home() {
   const [userEmail, setUserEmail] = useState('');
@@ -51,18 +41,6 @@ function Home() {
     });
   }, []);
 
-  const handleLogout = () => {
-    const auth = getAuth(app);
-
-    signOut(auth)
-      .then(() => {
-        setUserEmail('');
-      })
-      .catch((error) => {
-        console.error('Logout failed', error);
-      });
-  };
-
   const handleCitySelection = async (city) => {
     if (userEmail) {
       const citiesCollectionRef = collection(db, 'users');
@@ -75,34 +53,10 @@ function Home() {
 
   return (
     <Container>
-      <Navbar color="light" light expand="md">
-        <NavbarBrand href="/">Home</NavbarBrand>
-        <Nav className="ml-auto" navbar>
-          {userEmail ? (
-            <>
-              <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle nav caret>
-                  Welcome, {userEmail}
-                </DropdownToggle>
-                <DropdownMenu right>
-                  <DropdownItem onClick={handleLogout}>Logout</DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
-            </>
-          ) : (
-            <>
-              <NavItem>
-                <NavLink href="/register">Register</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="/login">Login</NavLink>
-              </NavItem>
-            </>
-          )}
-        </Nav>
-      </Navbar>
-
-      <h1 className="mt-4">Welcome to the Home Page</h1>
+      <div className="text-center">
+        <h1 className="mt-4">Welcome to the Home Page</h1>
+        <p>A geo-locational based chat prototype app</p>
+      </div>
 
       {userEmail && (
         <Form>

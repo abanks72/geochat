@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth'; // Import necessary functions
+import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 import { app } from './firebaseConfig';
 import { Container, Form, FormGroup, Label, Input, Button } from 'reactstrap';
-
+import './RegistrationForm.css'; // Import your custom CSS file
 
 function RegistrationForm() {
   const [email, setEmail] = useState('');
@@ -22,8 +22,8 @@ function RegistrationForm() {
   }
 
   return (
-    <Container className="mt-5">
-      <Form>
+    <div className="registration-container">
+      <Form className="registration-form">
         <FormGroup>
           <Label for="email">Email</Label>
           <Input
@@ -48,7 +48,7 @@ function RegistrationForm() {
           Register
         </Button>
       </Form>
-    </Container>
+    </div>
   );
 }
 

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { app } from './firebaseConfig';
 import { Container, Form, FormGroup, Label, Input, Button } from 'reactstrap';
-
+import './LoginForm.css'; // Import your custom CSS file
 
 function LoginForm() {
   const [email, setEmail] = useState('');
@@ -22,8 +22,8 @@ function LoginForm() {
   }
 
   return (
-    <Container className="mt-5">
-      <Form>
+    <div className="login-container">
+      <Form className="login-form">
         <FormGroup>
           <Label for="email">Email</Label>
           <Input
@@ -48,7 +48,7 @@ function LoginForm() {
           Login
         </Button>
       </Form>
-    </Container>
+    </div>
   );
 }
 
