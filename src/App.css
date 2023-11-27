@@ -36,3 +36,7 @@
     transform: rotate(360deg);
   }
 }
+
+.dropdown-menu.bg-transparent {
+  background-color: transparent;
+}

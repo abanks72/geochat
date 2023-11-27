@@ -18,27 +18,34 @@ import {
   getDoc,
 } from 'firebase/firestore';
 
+import { checkGeolocationSupport } from './geolocationUtils';
+import LocationDisplay from './LocationDisplay';
+
+
 function Home() {
   const [userEmail, setUserEmail] = useState('');
   const [selectedCity, setSelectedCity] = useState('');
   const [chatId, setChatId] = useState('');
+  const [userLocation, setUserLocation] = useState(null);
 
   useEffect(() => {
-    const auth = getAuth(app);
+    if (checkGeolocationSupport()) {
+      const auth = getAuth(app);
 
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        setUserEmail(user.email);
+      onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          setUserEmail(user.email);
 
-        const docRef = doc(db, 'users', user.email);
-        const docSnapshot = await getDoc(docRef);
+          const docRef = doc(db, 'users', user.email);
+          const docSnapshot = await getDoc(docRef);
 
-        if (docSnapshot.exists()) {
-          setSelectedCity(docSnapshot.data().selectedCity);
-          setChatId(docSnapshot.data().selectedCity);
+          if (docSnapshot.exists()) {
+            setSelectedCity(docSnapshot.data().selectedCity);
+            setChatId(docSnapshot.data().selectedCity);
+          }
         }
-      }
-    });
+      });
+    }
   }, []);
 
   const handleCitySelection = async (city) => {
@@ -50,6 +57,20 @@ function Home() {
       setChatId(city);
     }
   };
+
+  useEffect(() => {
+    if (userEmail && checkGeolocationSupport()) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setUserLocation({ latitude, longitude });
+        },
+        (error) => {
+          console.error('Error getting location:', error.message);
+        }
+      );
+    }
+  }, [userEmail]);
 
   return (
     <Container>
@@ -84,6 +105,13 @@ function Home() {
         <SanFrancisco selectedCity={selectedCity} userEmail={userEmail} />
       )}
       {selectedCity && <Chat chatId={chatId} />}
+
+      {userLocation && (
+        <p>
+          Your current location: {userLocation.latitude}, {userLocation.longitude}
+          <LocationDisplay latitude={userLocation.latitude} longitude={userLocation.longitude} />
+        </p>
+      )}
     </Container>
   );
 }

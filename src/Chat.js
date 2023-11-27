@@ -18,6 +18,7 @@ import {
   Input,
   Button,
 } from 'reactstrap';
+import './Chat.css';
 
 function Chat({ chatId }) {
   const [messages, setMessages] = useState([]);
@@ -72,12 +73,12 @@ function Chat({ chatId }) {
         <Card className="my-4">
           <CardBody>
             <CardTitle tag="h2">Chat</CardTitle>
-            <div id="chat-output" style={{ border: '1px solid #ccc', padding: '10px', borderRadius: '4px', minHeight: '200px', maxHeight: '400px', overflowY: 'auto' }}>
+            <div className="chat-container">
               {messages.map((message) => (
                 <CardText key={message.id}>{message.text}</CardText>
               ))}
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '10px' }}>
+            <div className="message-input">
               <Input
                 type="text"
                 placeholder="Type a message"
